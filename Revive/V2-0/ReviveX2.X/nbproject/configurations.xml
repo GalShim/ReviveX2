@@ -15,6 +15,35 @@
         <itemPath>mcc_generated_files/eusart2.h</itemPath>
         <itemPath>mcc_generated_files/cmp1.h</itemPath>
       </logicalFolder>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Adc_Loc.h</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Adc_Pub.h</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/App_Codes_Pub.h</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/App_Loc.h</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/App_Pub.h</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/App_Text_c.h</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Comm_Codes_Pub.h</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Comm_Loc.h</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Comm_Pub.h</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Comm_Text_c.h</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Eeprom_Loc.h</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Eeprom_Pub.h</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Keys_Loc.h</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Keys_Pub.h</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Led_Loc.h</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Led_Pub.h</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Motor_Loc.h</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Motor_Pub.h</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Types.h</itemPath>
+      <itemPath>../../../RfApplicator/V1-0/IO_Loc.h</itemPath>
+      <itemPath>../../../RfApplicator/V1-0/IO_Pub.h</itemPath>
+      <itemPath>../Revive_Vsup_Loc.h</itemPath>
+      <itemPath>../Revive_Vsup_Pub.h</itemPath>
+      <itemPath>../TipMem_Loc.h</itemPath>
+      <itemPath>../TipMem_Pub.h</itemPath>
+      <itemPath>../i2c.h</itemPath>
+      <itemPath>../i2c2.h</itemPath>
+      <itemPath>../pconfig.h</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/General.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -35,6 +64,17 @@
         <itemPath>mcc_generated_files/cmp1.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
+      <itemPath>../I2C2.c</itemPath>
+      <itemPath>../Revive_Vsup.c</itemPath>
+      <itemPath>../TipMem.c</itemPath>
+      <itemPath>../../../RfApplicator/V1-0/IO.c</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Adc_Pol.c</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/App.c</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Comm.c</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Eeprom.c</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Keys.c</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Led.c</itemPath>
+      <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Motor.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -43,6 +83,11 @@
       <itemPath>ReviveX2.mc3</itemPath>
     </logicalFolder>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>..</Elem>
+    <Elem>../../../RfApplicator/V1-0</Elem>
+    <Elem>../../../GeneoIIbPIC1939bl/V1_2</Elem>
+  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="default" type="2">
