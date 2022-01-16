@@ -1,0 +1,35 @@
+﻿.svn
+*.zip
+Dummy.txt
+*.o
+*.err
+*.map
+*.hex
+*.mcw
+*.tmp
+*.obj
+*.lst
+*.sym
+*.sdb
+*.dep
+*.pre
+*.p1
+funclist
+*.as
+*.mcs
+*.i
+
+
+## Microchip MPLAB IDE ##
+
+# Ignoring files according to http://microchip.wikidot.com/faq:72
+*/**/*.X/build/
+*/**/*.X/dist/
+
+# Ingoring private and generated Makefiles, to re-create them open the MPLAB IDE
+*/**/*.X/nbproject/Makefile-*
+*/**/*.X/nbproject/Package-*
+*/**/*.X/nbproject/private/
+*/**/*.X/.generated_files/*
+
+*/**/*.jlink
