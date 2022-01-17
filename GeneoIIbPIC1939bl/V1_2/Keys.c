@@ -19,6 +19,7 @@ Description: IO handler
 #include "Types.h"
 #include "Keys_Pub.h"
 #include "Keys_Loc.h"
+#include "..\..\Revive\V2-0\ReviveX2.X\mcc_generated_files\pin_manager.h"
 
 volatile struct{
     union{
@@ -176,7 +177,7 @@ void Keys_TaskMain (void)
                     }
                 }
             }
-            mask = mask<<1;
+            mask = (uint8)(mask<<1);
         }
     }   	
 }

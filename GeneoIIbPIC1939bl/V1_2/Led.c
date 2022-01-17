@@ -27,7 +27,7 @@
 #include "Eeprom_Pub.h"
 #include "Led_Pub.h"
 #include "Led_Loc.h"
-
+#include "..\..\Revive\V2-0\ReviveX2.X\mcc_generated_files\pin_manager.h"
 
 //RGB LEDs intensity
 #ifdef SW_LED_RGB_VAR
@@ -376,6 +376,8 @@ LED_CMD_SET_STATE_e Led_CmdState = LED_CMD_SET_STATE_AUTO;
                     {
                         LED_PORT_RGB_B &= ~LED_PORT_BIT_RGB_B;
                     }        
+                    break;
+                  case LED_RGB_ID_ALL:
                     break;
                 }    
                 #ifdef SW_COMM_LED_ON_EVENT
@@ -866,6 +868,8 @@ void Led_TaskMain (void)
 			
 			switch (Led_CmdState)
 			{
+              case LED_CMD_SET_STATE_AUTO:
+                break;
 			  case LED_CMD_SET_STATE_OFF:
 		        Led_Obj.LedGreen.State.Color = LED_GREEN_COLOR_GREEN;
 			    Led_Obj.LedGreen.State.Led = LED_GREEN_MODE_OFF;
@@ -947,7 +951,7 @@ void Led_TaskMain (void)
                 if (Led_Obj.LedGreen.State.NextLedState == LED_RGB_MODE_CONT)
                 {                                       //Stay in On
                     Led_Obj.LedGreen.State.Pulse = LED_PULSE_STATE_ON;
-                    Led_Obj.LedGreen.State.Led = LED_RGB_MODE_CONT;
+                     Led_Obj.LedGreen.State.Led = LED_GREEN_MODE_CONT;
                 }
                 else
                 {                                       //LED Off
@@ -955,6 +959,15 @@ void Led_TaskMain (void)
                     Led_Obj.LedGreen.State.Led = LED_GREEN_MODE_OFF;
                 }
             }    
+            break;
+          case LED_BLUE_MODE_OFF:
+          case LED_BLUE_MODE_CONT:
+          case LED_BLUE_MODE_PULSE:
+          case LED_RED_MODE_CONT:
+          case LED_ALL_MODE_CONT:
+          case LED_GREENnBLUE_MODE_CONT:
+          case LED_BLUEnRED_MODE_CONT:
+          case LED_REDnGREEN_MODE_CONT:
             break;
         }
         
@@ -1015,6 +1028,9 @@ void Led_TaskMain (void)
             {
                 Led_Obj.RgbLed.State = LED_PULSE_STATE_OFF;
             }    
+            break;
+          case LED_RGB_MODE_PULSEnOFF:
+          case LED_RGB_MODE_PULSEnCONT:
             break;
         }
         Led_SetRgb(Led_Obj.RgbLed.State);

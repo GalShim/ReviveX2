@@ -31,7 +31,11 @@
 typedef enum{
     MOTOR_PARAM_MODE_OFF = 0,   //Off
     MOTOR_PARAM_MODE_CONT,      //Continuous
-    MOTOR_PARAM_MODE_PULSE      //Pulses
+    MOTOR_PARAM_MODE_PULSE,     //Pulses
+    MOTOR_PARAM_MODE_3,         //Dummys, for Revive
+    MOTOR_PARAM_MODE_4,
+    MOTOR_PARAM_MODE_5,
+    MOTOR_PARAM_MODE_6,
 } MOTOR_PARAM_MODE_e;    
 
 typedef enum{
@@ -97,7 +101,7 @@ extern void Motor_DisRf_ON0 (void);
   extern uint8 Motor_Rf_Sample_Time_PulseStart(void);
   extern uint8 Motor_Rf_Sample_Time_PulseEnd(void);
   extern uint8 Motor_Rf_Prod_Sample_Time_PulseEnd(void);
-  extern uint8 Motor_Rf_Sample_Time_SetMonState(MOTOR_RF_MON_STATE_SET_e MonState);
+  extern void Motor_Rf_Sample_Time_SetMonState(MOTOR_RF_MON_STATE_SET_e MonState);
 #endif
 extern uint8 Motor_Rf_Sample_Time_Act(void);
 extern uint8 Motor_Rf_Sample_Time_Dis(uint8 DeltaTime);

@@ -298,7 +298,7 @@ void TipMem_TaskMain (void)
             #ifdef SW_TIP_TIMEOUT
                 TipMem_IIC_Start_Timeout();
             #endif
-            TipMem_Obj.Status.Flags.CommError = EESequentialRead2( 0xa0, 0, &TipMem_Obj.Comm.Buf[0], TIPMEM_DATA_LEN);
+            TipMem_Obj.Status.Flags.CommError = (uint8)EESequentialRead2( 0xa0, 0, &TipMem_Obj.Comm.Buf[0], TIPMEM_DATA_LEN);
             if (TipMem_Obj.Status.Flags.CommError == 0)
             {                                               //Reading successful
                 TipMem_Obj.State = TIPMEM_STATE_ReadCheck;
@@ -365,7 +365,7 @@ void TipMem_TaskMain (void)
             #ifdef SW_TIP_TIMEOUT
                 TipMem_IIC_Start_Timeout();
             #endif
-            TipMem_Obj.Status.Flags.CommError = EEPageWrite2L(0xa0, 0, &TipMem_Obj.Comm.Buf[0], TIPMEM_DATA_LEN);
+            TipMem_Obj.Status.Flags.CommError = (uint8)EEPageWrite2L(0xa0, 0, &TipMem_Obj.Comm.Buf[0], TIPMEM_DATA_LEN);
             TipMem_Obj.TimerWrite = TIPMEM_WRITE_TIMEOUT;   //Time after write, before next access to memory
             TipMem_Obj.State = TIPMEM_STATE_WriteEnd;
         }

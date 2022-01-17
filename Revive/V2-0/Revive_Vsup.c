@@ -23,6 +23,7 @@ Description: Supply voltage for Revive
 #include "..\..\GeneoIIbPIC1939bl\V1_2\Types.h"
 #include "Revive_Vsup_Pub.h"
 #include "Revive_Vsup_Loc.h"
+#include "..\..\Revive\V2-0\ReviveX2.X\mcc_generated_files\pin_manager.h"
 
 #define REVIVE_VSUP_V_MIN       1
 #define REVIVE_VSUP_V_MAX       200

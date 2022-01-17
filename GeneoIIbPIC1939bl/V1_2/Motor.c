@@ -14,7 +14,7 @@
         #include <p18f46k22.h>
     #else
         #ifdef SW_UC_PIC18F45K22
-            #include <p18f45k22.h>
+//            #include <p18f45k22.h>
         #else
             #include <p18f25k22.h>
         #endif
@@ -25,10 +25,11 @@
 #include "General.h"
 #include "Types.h"
 #include "Eeprom_Pub.h"
-#include "Revive_Vsup_Pub.h"
+#include "..\..\Revive\V2-0\Revive_Vsup_Pub.h"
 #include "Motor_Pub.h"
 #include "Motor_Loc.h"
 #include "..\..\GeneoIIbPIC1939bl\V1_2\App_Pub.h"
+#include "..\..\Revive\V2-0\ReviveX2.X\mcc_generated_files\pin_manager.h"
 
 #ifdef SW_PROD_ReviveRf
     typedef enum{                                //Revive motor states
@@ -281,7 +282,7 @@ const uint8 Motor_PowerToCycleConvert [MOT_PARAM_POWER_STEP_NUM] = {200, 185, 17
         }    
         return(Result);
     }
-    uint8 Motor_Rf_Sample_Time_SetMonState(MOTOR_RF_MON_STATE_SET_e MonState)
+    void Motor_Rf_Sample_Time_SetMonState(MOTOR_RF_MON_STATE_SET_e MonState)
     {
         switch (MonState)
         {
@@ -403,6 +404,8 @@ void Motor_SetMotor(MOT_ID_e MotorId, uint8 Action)
                 Motor_IntObj.Task.Flags.Bits.RfActive = 0;
             }        
             break;
+          case MOT_ID_num:
+            break;
       #endif
     }    
 }    
@@ -428,6 +431,8 @@ uint8 Motor_GetMotor(MOT_ID_e MotorId)
         {
             Result = TRUE;
         }    
+        break;
+      case MOT_ID_num:
         break;
       #ifndef SW_PROD_ReviveRf
           case MOT_ID_Y:
@@ -613,13 +618,13 @@ uint8 Motor_UpdMotorSetting (MOTOR_UPD_MOT_SETTING_e Upd)
 void Motor_ParamFromEeprom(MOT_ID_e MotorId)
 {
     #ifdef SW_PROD_ReviveRf
-        Motor_Obj.Motor[MotorId].Params.doublepulse= Eeprom_ReadParam(EEPROM_PARAM_TASK_MOTOR, MOTOR_EE_PARAM_RFOUT_DOUBLEPULSE);
-        Motor_Obj.Motor[MotorId].Params.p1power =    Eeprom_ReadParam(EEPROM_PARAM_TASK_MOTOR, MOTOR_EE_PARAM_RFOUT_P1POWER);
+        Motor_Obj.Motor[MotorId].Params.doublepulse= (uint8)Eeprom_ReadParam(EEPROM_PARAM_TASK_MOTOR, MOTOR_EE_PARAM_RFOUT_DOUBLEPULSE);
+        Motor_Obj.Motor[MotorId].Params.p1power =    (uint8)Eeprom_ReadParam(EEPROM_PARAM_TASK_MOTOR, MOTOR_EE_PARAM_RFOUT_P1POWER);
           if (Motor_Obj.Motor[MotorId].Params.p1power > SW_VSUP_MAX_POWER) {Motor_Obj.Motor[MotorId].Params.p1power = SW_VSUP_MAX_POWER;}
           if (Motor_Obj.Motor[MotorId].Params.p1power < SW_VSUP_MIN_POWER) {Motor_Obj.Motor[MotorId].Params.p1power = SW_VSUP_MIN_POWER;}
         Motor_Obj.Motor[MotorId].Params.p1intensity =Eeprom_ReadParam(EEPROM_PARAM_TASK_MOTOR, MOTOR_EE_PARAM_RFOUT_P1INTENSITY)/* * 10*/;
         Motor_Obj.Motor[MotorId].Params.delay =      Eeprom_ReadParam(EEPROM_PARAM_TASK_MOTOR, MOTOR_EE_PARAM_RFOUT_DELAY)/* * 10*/;
-        Motor_Obj.Motor[MotorId].Params.p2power =    Eeprom_ReadParam(EEPROM_PARAM_TASK_MOTOR, MOTOR_EE_PARAM_RFOUT_P2POWER);
+        Motor_Obj.Motor[MotorId].Params.p2power =    (uint8)Eeprom_ReadParam(EEPROM_PARAM_TASK_MOTOR, MOTOR_EE_PARAM_RFOUT_P2POWER);
           if (Motor_Obj.Motor[MotorId].Params.p2power > SW_VSUP_MAX_POWER) {Motor_Obj.Motor[MotorId].Params.p2power = SW_VSUP_MAX_POWER;}
           if (Motor_Obj.Motor[MotorId].Params.p2power < SW_VSUP_MIN_POWER) {Motor_Obj.Motor[MotorId].Params.p2power = SW_VSUP_MIN_POWER;}
         Motor_Obj.Motor[MotorId].Params.p2intensity =Eeprom_ReadParam(EEPROM_PARAM_TASK_MOTOR, MOTOR_EE_PARAM_RFOUT_P2INTENSITY)/* * 10*/;
@@ -685,7 +690,7 @@ void Motor_ActMotor(MOT_ID_e MotorId, uint8 Action)
 #ifdef SW_PROD_ReviveRf
     void Motor_StartPulse (void)
     {
-        Motor_Obj.Motor[MOT_ID_REVIVE].Action.State.Motor = MOTORREVIVE_STATE_START;
+        Motor_Obj.Motor[MOT_ID_REVIVE].Action.State.Motor = (MOTOR_PARAM_MODE_e)MOTORREVIVE_STATE_START;
     }    
 #endif
 
@@ -792,7 +797,7 @@ void Motor_TaskMain (void)
             break;
           case MOTORREVIVE_STATE_START:
             Motor_Obj.Motor[MOT_ID_REVIVE].Action.CycleTime.Current = 0;
-            Motor_Obj.Motor[MOT_ID_REVIVE].Action.State.Motor = MOTORREVIVE_STATE_PRE_MOTOR;
+            Motor_Obj.Motor[MOT_ID_REVIVE].Action.State.Motor = (MOTOR_PARAM_MODE_e)MOTORREVIVE_STATE_PRE_MOTOR;
             if (Motor_Obj.Motor[MOT_ID_REVIVE].Params.doublepulse)
             {                                               //Double pulse - activate brush motor
                 REVIVE_MOT_ON;
@@ -807,7 +812,7 @@ void Motor_TaskMain (void)
             if (Motor_Obj.Motor[MOT_ID_REVIVE].Action.CycleTime.Current >= MOTORREVIVE_PRE_MOTOR_TIME)
             {                                               //Pre motor time end  - start pulse
                 Motor_SetMotor(MOT_ID_REVIVE, TRUE);
-                Motor_Obj.Motor[MOT_ID_REVIVE].Action.State.Motor = MOTORREVIVE_STATE_P1;
+                Motor_Obj.Motor[MOT_ID_REVIVE].Action.State.Motor = (MOTOR_PARAM_MODE_e)MOTORREVIVE_STATE_P1;
             }
             break;
           case MOTORREVIVE_STATE_P1:
@@ -818,10 +823,10 @@ void Motor_TaskMain (void)
                 if (Motor_Obj.Motor[MOT_ID_REVIVE].Params.doublepulse)
                 {                                           //Double pulse - continue
                     Revive_Vsup_Cmnd (REVIVE_VSUP_CMND_ON, Motor_Obj.Motor[MOT_ID_REVIVE].Params.p2power); //Activate motor in P2 amplitude
-                    Motor_Obj.Motor[MOT_ID_REVIVE].Action.State.Motor = MOTORREVIVE_STATE_DELAY;
+                    Motor_Obj.Motor[MOT_ID_REVIVE].Action.State.Motor = (MOTOR_PARAM_MODE_e)MOTORREVIVE_STATE_DELAY;
                     if (Motor_Obj.Motor[MOT_ID_REVIVE].Params.delay == 0)
                     {                                       //Delay 0 - continue directly to next pulse
-                        Motor_Obj.Motor[MOT_ID_REVIVE].Action.State.Motor = MOTORREVIVE_STATE_P2;
+                        Motor_Obj.Motor[MOT_ID_REVIVE].Action.State.Motor = (MOTOR_PARAM_MODE_e)MOTORREVIVE_STATE_P2;
                     }
                     else
                         {Motor_SetMotor(MOT_ID_REVIVE, FALSE);} //Delay != 0 - Deactivate motor
@@ -829,7 +834,7 @@ void Motor_TaskMain (void)
                 else
                 {                                           //Single pulse - end
                     Motor_SetMotor(MOT_ID_REVIVE, FALSE);   //Deactivate motor
-                    Motor_Obj.Motor[MOT_ID_REVIVE].Action.State.Motor = MOTORREVIVE_STATE_END;
+                    Motor_Obj.Motor[MOT_ID_REVIVE].Action.State.Motor = (MOTOR_PARAM_MODE_e)MOTORREVIVE_STATE_END;
                 }    
             }    
             break;
@@ -840,7 +845,7 @@ void Motor_TaskMain (void)
                                                                             Motor_Obj.Motor[MOT_ID_REVIVE].Params.delay))
             {                                               //Delay time over - activate output
                 Motor_SetMotor(MOT_ID_REVIVE, TRUE);
-                Motor_Obj.Motor[MOT_ID_REVIVE].Action.State.Motor = MOTORREVIVE_STATE_P2;
+                Motor_Obj.Motor[MOT_ID_REVIVE].Action.State.Motor = (MOTOR_PARAM_MODE_e)MOTORREVIVE_STATE_P2;
             }    
             break;
           case MOTORREVIVE_STATE_P2:
@@ -853,12 +858,12 @@ void Motor_TaskMain (void)
                 Motor_SetMotor(MOT_ID_REVIVE, FALSE);       //Deactivate motor
                 Revive_Vsup_Cmnd (REVIVE_VSUP_CMND_ON, Motor_Obj.Motor[MOT_ID_REVIVE].Params.p1power); //Activate motor in P1 amplitude
                 REVIVE_MOT_OFF;                             //Deactivate brush motor
-                Motor_Obj.Motor[MOT_ID_REVIVE].Action.State.Motor = MOTORREVIVE_STATE_END;
+                Motor_Obj.Motor[MOT_ID_REVIVE].Action.State.Motor = (MOTOR_PARAM_MODE_e)MOTORREVIVE_STATE_END;
             }    
             break;
           case MOTORREVIVE_STATE_END:
             App_PulseDone();
-            Motor_Obj.Motor[MOT_ID_REVIVE].Action.State.Motor = MOTORREVIVE_STATE_IDLE;
+            Motor_Obj.Motor[MOT_ID_REVIVE].Action.State.Motor = (MOTOR_PARAM_MODE_e)MOTORREVIVE_STATE_IDLE;
             break;
         }    
       #else //------------------------------------------------------------------

@@ -23,6 +23,7 @@ Description: IO handler
 #include "..\..\GeneoIIbPIC1939bl\V1_2\Types.h"
 #include "..\..\RfApplicator\V1-0\IO_Pub.h"
 #include "..\..\RfApplicator\V1-0\IO_Loc.h"
+#include "..\..\Revive\V2-0\ReviveX2.X\mcc_generated_files\pin_manager.h"
 
 volatile struct{
     union{
