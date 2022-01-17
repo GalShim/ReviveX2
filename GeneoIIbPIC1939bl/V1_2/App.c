@@ -14,7 +14,7 @@
         #include <p18f46k22.h>
     #else
         #ifdef SW_UC_PIC18F45K22
-            #include <p18f45k22.h>
+//            #include <p18f45k22.h>
         #else
             #include <p18f25k22.h>
         #endif
@@ -38,10 +38,10 @@
 #include "App_Pub.h"
 #include "App_Loc.h"
 #ifdef SW_TIP_MEM
-    #include "..\..\Revive\V1-0\TipMem_Pub.h"
+    #include "..\..\Revive\V2-0\TipMem_Pub.h"
 #endif
 #ifdef SW_VSUP_GEN
-    #include "..\..\Revive\V1-0\Revive_Vsup_Pub.h"
+    #include "..\..\Revive\V2-0\Revive_Vsup_Pub.h"
 #endif
 
 volatile struct{

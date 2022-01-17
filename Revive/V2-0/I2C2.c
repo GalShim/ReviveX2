@@ -13,7 +13,7 @@ Based on Microchip functions
         #include <p18f46k22.h>
     #else
         #ifdef SW_UC_PIC18F45K22
-            #include <p18f45k22.h>
+//            #include <p18f45k22.h>
         #else
             #include <p18f25k22.h>
         #endif

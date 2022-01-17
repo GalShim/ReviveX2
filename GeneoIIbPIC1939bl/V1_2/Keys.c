@@ -11,7 +11,7 @@ Description: IO handler
     #ifdef SW_UC_DEVBOARD
         #include <p18f46k22.h>
     #else
-        #include <p18f25k22.h>
+//        #include <p18f25k22.h>
     #endif
 #endif
 #include <stdlib.h>
