@@ -26,6 +26,7 @@
 #include "Motor_Pub.h"
 #include "Adc_Pub.h"
 #include "Adc_Loc.h"
+#include "..\..\Revive\V2-0\ReviveX2.X\mcc_generated_files\pin_manager.h"
 
 extern uint8 main_DisFlag_Get (void);
 extern void main_DisFlag_Clr (void);
@@ -116,7 +117,7 @@ uint16 StartTimer = 500; //10000; //3000;
     };
 #endif
 #ifdef SW_UC_PIC18F
-    rom const uint8 Adc_ConvertCodeToChannel[ADC_IN_num] = {
+    const uint8 Adc_ConvertCodeToChannel[ADC_IN_num] = {
         13, //ADC_IN_12V_V
         31, //ADC_IN_5V_V           //Internal
         11, //ADC_IN_SupCur_I
@@ -131,7 +132,7 @@ uint16 StartTimer = 500; //10000; //3000;
 //--------------------------------------------------------------
 #define ADC_TEMPTABLE_LEN ((50-5)+1+2)
 #ifdef SW_UC_PIC18F
- const rom struct{                  
+ const  struct{                  
 #else
  const struct{                  
 #endif
@@ -505,6 +506,8 @@ uint16 Adc_SampleRequest (ADC_IN_e Channel, uint8 UseAve)
                  Adc_Obj.Input[Adc_Obj.Task.Channel] = Adc_Obj.Adc[Adc_Obj.Task.Channel];
                  break;
               #endif
+               default:
+                 break;
              }
             #endif
             ReturnVal = Adc_Obj.Input[Adc_Obj.Task.Channel];
@@ -553,6 +556,8 @@ uint16 Adc_GetVal(ADC_IN_e Channel)
              break;
           #endif
       #endif
+      default:
+        break;
     }
     return(Result);
 }  
@@ -692,7 +697,7 @@ void Adc_TaskMain (void)
         if (Adc_Obj.Task.Flags.Bits.Tick1mS)
         {                                           //Timeout over - capacitor is charged
           uint16 LoopLimit = ADC_C1IF_LOOP_LIMIT;
-            Adc_IntObj.Task.Timer = ADC_DISC_CAP_MAX_TIME;
+            Adc_IntObj.Task.Timer = (uint8)ADC_DISC_CAP_MAX_TIME;
             Adc_Obj.Task.Flags.Bits.Tick1mS = 0;
             main_DisFlag_Clr();
             Adc_Hw_SetDischargeMeasure();
@@ -722,7 +727,7 @@ void Adc_TaskMain (void)
         if (Adc_Obj.Task.Flags.Bits.Tick1mS)
         {                                           //Timeout over - capacitor is discharged
           uint16 LoopLimit = ADC_C1IF_LOOP_LIMIT;
-            Adc_IntObj.Task.Timer = ADC_DISC_CAP_MAX_TIME;
+            Adc_IntObj.Task.Timer = (uint8)ADC_DISC_CAP_MAX_TIME;
             Adc_Obj.Task.Flags.Bits.Tick1mS = 0;
             main_DisFlag_Clr();
             Adc_Hw_SetDischargeMeasure();
@@ -778,6 +783,8 @@ void Adc_TaskMain (void)
         }
         break;
     #endif
+      default:
+        break;
     }
 }
 

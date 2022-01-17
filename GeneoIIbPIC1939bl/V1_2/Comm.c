@@ -32,6 +32,7 @@
 #include "Comm_Loc.h"
 #include "Eeprom_Pub.h"
 #include "Led_Pub.h"
+#include "..\..\Revive\V2-0\ReviveX2.X\mcc_generated_files\pin_manager.h"
 
 #ifdef SW_UC_PIC16F
     #define COMM_IN_CYC_BUF_LEN         100 //50 //25   //In 19200bps: 25 problems. 50 works. 100 margin from 50.
@@ -125,7 +126,7 @@ uint8 AttribValLen;
 uint8 CommTempEepromBuf[COMM_TEMP_EEPROM_BUF_LEN];              //Temporary save data (parameter) to EEPROM
 
 #ifdef SW_UC_PIC18F
- const rom COMM_TEXT_CODE_e Comm_ConvertAppEventToNameCode [APP_EVENT_num] = {
+ const COMM_TEXT_CODE_e Comm_ConvertAppEventToNameCode [APP_EVENT_num] = {
 #else
  const COMM_TEXT_CODE_e Comm_ConvertAppEventToNameCode [APP_EVENT_num] = {
 #endif
@@ -267,7 +268,7 @@ uint8 Comm_GetEventState (uint8 EventCode)
 *  Utilities routines
 ******************************************************************************/
 #ifdef SW_UC_PIC18F
-    void Comm_CpyRom2Ram (uint8* Target, rom const uint8* Source, uint8 Length)
+    void Comm_CpyRom2Ram (uint8* Target, const uint8* Source, uint8 Length)
     {
         while (Length)
         {
@@ -349,7 +350,7 @@ uint8 Comm_GetRxByte(void)
 //----------------------------
 //Memory compare RX buffer to text
 #ifdef SW_UC_PIC18F
- uint8 Comm_RxBufMemcmp (uint8 Index, const rom uint8* Addr, uint8 Len)
+ uint8 Comm_RxBufMemcmp (uint8 Index, const uint8* Addr, uint8 Len)
 #else
  uint8 Comm_RxBufMemcmp (uint8 Index, const uint8* Addr, uint8 Len)
 #endif
@@ -424,7 +425,7 @@ COMM_TEXT_CODE_e Comm_ParserFindText (COMM_TEXT_CODE_e First, COMM_TEXT_CODE_e L
     while ((First <= Last) && (Result == COMM_TEXT_NONE))
     {
         TempLen = CommTextTable[First].TextLen;
-        if (Comm_RxBufMemcmp (Comm_Obj.Parcer.Index, CommTextTable[First].TextAddr, TempLen) == TRUE)
+        if (Comm_RxBufMemcmp ((uint8)Comm_Obj.Parcer.Index, CommTextTable[First].TextAddr, (uint8)TempLen) == TRUE)
         {                                               //Text found
             Comm_Obj.Parcer.Index += TempLen;
             Comm_Obj.Parcer.Len -= TempLen;
@@ -548,7 +549,7 @@ uint8 Comm_ParserTextLength(void)
             Result = TRUE;
         }    
     }    
-    return(Len);
+    return((uint8)Len);
 }    
 
 /******************************************************************************
@@ -562,7 +563,7 @@ uint8 Comm_ParserTextLength(void)
 *  Remarks:
 *    Called repeatadly until read/error
 ******************************************************************************/
-COMM_RX_STATUS_e Comm_ParserExecRxMsg(void)
+COMM_RX_PARSER_STATE_e Comm_ParserExecRxMsg(void)
 {
   COMM_RX_PARSER_STATE_e Result = COMM_RX_PARSER_STATE_BUSY;
   COMM_TEXT_CODE_e TempCode;
@@ -686,11 +687,11 @@ COMM_RX_STATUS_e Comm_ParserExecRxMsg(void)
                       uint8 TempTextLen;
                         Comm_ParserNextText();
                         TempTextLen = Comm_ParserTextLength();
-                        Comm_RxBufMemcpy (Comm_Obj.Parcer.Index, &CommTempEepromBuf[0], COMM_TEMP_EEPROM_BUF_LEN);  //Copy to temporary length (max temp buf length)
+                        Comm_RxBufMemcpy ((uint8)Comm_Obj.Parcer.Index, &CommTempEepromBuf[0], COMM_TEMP_EEPROM_BUF_LEN);  //Copy to temporary length (max temp buf length)
                         Eeprom_StoreParam (Comm_Obj.Parcer.Tag, Comm_Obj.Parcer.Attrib, &CommTempEepromBuf[0], TempTextLen);  //Send to EEPROM
                         if (TempTextLen > Comm_Obj.Parcer.Len)
                         {                           //Overflow protection
-                            TempTextLen = Comm_Obj.Parcer.Len;
+                            TempTextLen = (uint8)Comm_Obj.Parcer.Len;
                         }    
                         Comm_Obj.Parcer.Index += TempTextLen;
                         Comm_Obj.Parcer.Len -= TempTextLen;
@@ -709,7 +710,7 @@ COMM_RX_STATUS_e Comm_ParserExecRxMsg(void)
                         TempTextLen = Comm_ParserTextLength();
 						if (TempTextLen == 1)
 						{
-                        	Comm_RxBufMemcpy (Comm_Obj.Parcer.Index, &Cmd, TempTextLen);
+                        	Comm_RxBufMemcpy ((uint8)Comm_Obj.Parcer.Index, &Cmd, TempTextLen);
 							Led_Cmd_SetState (Cmd);
 						}
 					}
@@ -724,6 +725,8 @@ COMM_RX_STATUS_e Comm_ParserExecRxMsg(void)
                     #endif
                 }    
                 Result = COMM_RX_PARSER_STATE_SEND_RPLY;
+                break;
+              default:
                 break;
             }    
             break;
@@ -794,9 +797,9 @@ void Comm_BuilderAddChar (uint8 NewChar)
 *    None
 ******************************************************************************/
 #ifdef SW_UC_PIC18F
-    void Comm_BuilderAddText (const rom uint8* TextAddr, uint8 TextLen)
+    void Comm_BuilderAddText (const uint8* TextAddr, uint8 TextLen)
     {
-        Comm_CpyRom2Ram (&Comm_TxBuf[Comm_IntObj.OutData.TxIndex], (rom const uint8*)TextAddr, TextLen);
+        Comm_CpyRom2Ram (&Comm_TxBuf[Comm_IntObj.OutData.TxIndex], (const uint8*)TextAddr, TextLen);
         Comm_IntObj.OutData.TxIndex += TextLen;
     }
 #else
@@ -851,7 +854,7 @@ void Comm_BuilderAddChar (uint8 NewChar)
 *    None
 ******************************************************************************/
 #ifdef SW_UC_PIC18F
- void Comm_BuilderAddAttribText (const rom uint8* AttribNameAddr, uint8 AttribNameLen, const rom uint8* AttribValAddr, uint8 AttribValLen)
+ void Comm_BuilderAddAttribText (const uint8* AttribNameAddr, uint8 AttribNameLen, const uint8* AttribValAddr, uint8 AttribValLen)
 #else
  void Comm_BuilderAddAttribText (const uint8* AttribNameAddr, uint8 AttribNameLen, const uint8* AttribValAddr, uint8 AttribValLen)
 #endif
@@ -865,7 +868,7 @@ void Comm_BuilderAddChar (uint8 NewChar)
 }
 //-----------------------------------------------------------------------------
 #ifdef SW_UC_PIC18F
- void Comm_BuilderAddAttribTextRam (const rom uint8* AttribNameAddr, uint8 AttribNameLen, uint8* AttribValAddr, uint8 AttribValLen)
+ void Comm_BuilderAddAttribTextRam (const uint8* AttribNameAddr, uint8 AttribNameLen, uint8* AttribValAddr, uint8 AttribValLen)
 #else
  void Comm_BuilderAddAttribTextRam (const uint8* AttribNameAddr, uint8 AttribNameLen, uint8* AttribValAddr, uint8 AttribValLen)
 #endif
@@ -893,7 +896,7 @@ void Comm_BuilderAddChar (uint8 NewChar)
 *    None
 ******************************************************************************/
 #ifdef SW_UC_PIC18F
- void Comm_BuilderAddAttribNum (const rom uint8* AttribNameAddr, uint8 AttribNameLen, uint16 AttribVal, uint8 AttribValLen)
+ void Comm_BuilderAddAttribNum (const uint8* AttribNameAddr, uint8 AttribNameLen, uint16 AttribVal, uint8 AttribValLen)
 #else
  void Comm_BuilderAddAttribNum (const uint8* AttribNameAddr, uint8 AttribNameLen, uint16 AttribVal, uint8 AttribValLen)
 #endif
@@ -1027,7 +1030,7 @@ void Comm_RxData_Restart (void)
 //----------------------------
 void Comm_RxData_SaveByte (void)
 {
-  uint8 TempIndex = Comm_Obj.Task.RxIndex;
+  uint8 TempIndex = (uint8)Comm_Obj.Task.RxIndex;
   uint8 TempByte = Comm_Obj.Task.RecByte;
     Comm_RxBuf[TempIndex] = TempByte;
     Comm_Obj.Task.RxIndex++;
@@ -1274,7 +1277,7 @@ void Comm_TaskMain (void)
                 Comm_Obj.Status.Flags.AddCloseEventTag = 1;
                 Comm_BuilderAddChar(COMM_MSG_TAG_END_BYTE);
                 Comm_BuilderAddChar(COMM_MSG_TAG_START_BYTE);
-                Comm_BuilderAddText((const rom uint8*)&CommTxt_Tag_module, CommTxt_Tag_module_LEN);
+                Comm_BuilderAddText((const uint8*)&CommTxt_Tag_module, CommTxt_Tag_module_LEN);
                 Comm_GetAppInfo(COMM_TEXT_Attrib_id_module);
                 Comm_GetAppInfo(COMM_TEXT_Attrib_status_module);
                 Comm_GetAppInfo(COMM_TEXT_Attrib_reason);
@@ -1283,12 +1286,12 @@ void Comm_TaskMain (void)
                 Comm_Obj.Status.Flags.AddCloseEventTag = 1;
                 Comm_BuilderAddChar(COMM_MSG_TAG_END_BYTE);
                 Comm_BuilderAddChar(COMM_MSG_TAG_START_BYTE);
-                Comm_BuilderAddText((const rom uint8*)&CommTxt_Tag_module, CommTxt_Tag_module_LEN);
+                Comm_BuilderAddText((const uint8*)&CommTxt_Tag_module, CommTxt_Tag_module_LEN);
                 Comm_GetAppInfo(COMM_TEXT_Attrib_id_module);
                 #ifdef SW_IGNORE_THERMISTOR
                   {                                                     //Thermistor not in use - send "NA"
                     uint8 TempBuf[APP_TECHINFO_PARAM_ID_TEMP_NA_LEN];
-                      Comm_CpyRom2Ram (&TempBuf[0], (rom const uint8*)&APP_TECHINFO_PARAM_ID_TEMP_NA[0], APP_TECHINFO_PARAM_ID_TEMP_NA_LEN);
+                      Comm_CpyRom2Ram (&TempBuf[0], (const uint8*)&APP_TECHINFO_PARAM_ID_TEMP_NA[0], APP_TECHINFO_PARAM_ID_TEMP_NA_LEN);
                       Comm_BuilderAddAttribTextRam (CommTextTable[COMM_TEXT_Attrib_status_module].TextAddr, CommTextTable[COMM_TEXT_Attrib_status_module].TextLen, (uint8*)&TempBuf[0], APP_TECHINFO_PARAM_ID_TEMP_NA_LEN);
                   }
                 #else
@@ -1408,7 +1411,7 @@ void Comm_TaskTick1mS (void)
 ******************************************************************************/
 //RX interrupt
 #ifdef SW_UC_PIC18F
-volatile void Comm_RxInterrupt (void)
+void Comm_RxInterrupt (void)
 #else
 void Comm_RxInterrupt (void)
 #endif
@@ -1427,7 +1430,7 @@ void Comm_RxInterrupt (void)
 
 //TX interrupt
 #ifdef SW_UC_PIC18F
-volatile void Comm_TxInterrupt (void)
+void Comm_TxInterrupt (void)
 #else
 void Comm_TxInterrupt (void)
 #endif

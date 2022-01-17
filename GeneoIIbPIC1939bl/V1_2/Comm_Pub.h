@@ -17,8 +17,8 @@ extern void Comm_TaskInit (void);
 extern void Comm_TaskMain (void);
 extern void Comm_TaskTick1mS (void);
 #ifdef SW_UC_PIC18F
-  volatile extern void Comm_RxInterrupt (void);
-  volatile extern void Comm_TxInterrupt (void);
+  extern void Comm_RxInterrupt (void);
+  extern void Comm_TxInterrupt (void);
 #else
   extern void Comm_RxInterrupt (void);
   extern void Comm_TxInterrupt (void);

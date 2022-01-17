@@ -91,7 +91,7 @@ struct{
     #define APP_RF_TEST_FAULT_NUM   3           //Max number of faults
     struct{
         APP_RF_TEST_STATE_e State;
-        APP_RF_TEST_STATE_e StateNP;
+        APP_RF_NP_TEST_STATE_e StateNP;
         //uint8               FaultCounter;
         uint8               SampleCounter;
         uint16              M1;
@@ -105,7 +105,7 @@ struct{
 #endif
 
 #ifdef SW_UC_PIC18F
-   const rom uint8* TextAddr;
+   const uint8* TextAddr;
 #else
    const uint8* TextAddr;
 #endif
@@ -313,6 +313,8 @@ void App_CheckDevice (APP_DEVICE_e Device)
         Led_TaskInit();
         break;
         #endif
+      case APP_DEVICE_num:
+        break;
     }    
 }    
 
@@ -669,6 +671,8 @@ COMM_ERROR_e App_CommCmnd (COMM_TEXT_CODE_e Cmnd)
             Result = COMM_ERROR_FAIL;
 		}
 		break;
+      default:
+        break;
     }
     return(Result);    
 }    
@@ -721,6 +725,8 @@ void App_CommConfirm (COMM_TEXT_CODE_e Confirm,  APP_EVENT_CODE_e EventCode)
             App_Obj.Event[EventCode].State = APP_EVENT_STATE_CONFIRMED;
         }    
         break;
+      default:
+        break;
     }    
     Comm_SetEvent (EventCode, FALSE);           //Clear event in comm module
 }    
@@ -748,11 +754,11 @@ void App_PrepVal(uint16 Value)
     App_ConfigParamTempBuf[2] = '.';
     App_ConfigParamTempBuf[1] = (Value%10) | 0x30;
     Value /= 10;
-    App_ConfigParamTempBuf[0] = Value | 0x30;
+    App_ConfigParamTempBuf[0] = (uint8)(Value | 0x30);
     if (App_ConfigParamTempBuf[0] == '0')
     {
         #ifdef SW_UC_PIC18F
-            TextAddr = (const rom uint8*)&App_ConfigParamTempBuf[1];
+            TextAddr = (const uint8*)&App_ConfigParamTempBuf[1];
         #else
             TextAddr = (const uint8*)&App_ConfigParamTempBuf[1];
         #endif
@@ -761,7 +767,7 @@ void App_PrepVal(uint16 Value)
     else
     {
         #ifdef SW_UC_PIC18F
-            TextAddr = (const rom uint8*)&App_ConfigParamTempBuf[0];
+            TextAddr = (const uint8*)&App_ConfigParamTempBuf[0];
         #else
             TextAddr = (const uint8*)&App_ConfigParamTempBuf[0];
         #endif
@@ -783,8 +789,8 @@ void App_PrepInt (uint16 IntVal)
         App_ConfigParamTempBuf[i] = (IntVal%10) | 0x30;
         IntVal /= 10;
     }
-    //TextAddr = (const rom uint8*)&App_ConfigParamTempBuf[0] + 4;
-    TextAddr = (const rom uint8*)&App_ConfigParamTempBuf[0] + i;
+    //TextAddr = (const uint8*)&App_ConfigParamTempBuf[0] + 4;
+    TextAddr = (const uint8*)&App_ConfigParamTempBuf[0] + i;
     TextLen = 5 - i;
 }    
 
@@ -856,7 +862,7 @@ void App_GetInfo (COMM_TEXT_CODE_e AttribCode, uint8* AttribAddr, uint8* AttribL
             TextLen = 1;
         }
         #ifdef SW_UC_PIC18F
-            TextAddr = (const rom uint8*)&App_ConfigParamTempBuf[0];
+            TextAddr = (const uint8*)&App_ConfigParamTempBuf[0];
         #else
             TextAddr = &App_ConfigParamTempBuf[0];
         #endif
@@ -910,6 +916,8 @@ void App_GetInfo (COMM_TEXT_CODE_e AttribCode, uint8* AttribAddr, uint8* AttribL
           case APP_EVENT_FAULT_Tip:
             TextAddr = &APP_EVENT_FAULT_CODE_TIP[0];
             TextLen = APP_EVENT_FAULT_CODE_TIP_LEN;
+            break;
+          default:
             break;
         }
         break;
@@ -970,11 +978,13 @@ void App_GetInfo (COMM_TEXT_CODE_e AttribCode, uint8* AttribAddr, uint8* AttribL
                 break;
               case APP_EVENT_TIPINFO_info:
                 App_ConfigParamTempBuf[0] = TipMem_GetId();
-                TextAddr = (const rom uint8*)&App_ConfigParamTempBuf[0];
+                TextAddr = (const uint8*)&App_ConfigParamTempBuf[0];
                 TextLen = 1;
                 TextFromRom = FALSE;
                 break;
           #endif
+          default:
+            break;
         }
         break;
         
@@ -1043,8 +1053,8 @@ void App_GetInfo (COMM_TEXT_CODE_e AttribCode, uint8* AttribAddr, uint8* AttribL
              TempValue /= 10;
              App_ConfigParamTempBuf[1] = (TempValue%10) | 0x30;
              TempValue /= 10;
-             App_ConfigParamTempBuf[0] = TempValue | 0x30;
-             TextAddr = (const rom uint8*)&App_ConfigParamTempBuf[0];
+             App_ConfigParamTempBuf[0] = (uint8)(TempValue | 0x30);
+             TextAddr = (const uint8*)&App_ConfigParamTempBuf[0];
              TextLen = 4;
              if (App_ConfigParamTempBuf[0] == '0')
              {
@@ -1082,12 +1092,14 @@ void App_GetInfo (COMM_TEXT_CODE_e AttribCode, uint8* AttribAddr, uint8* AttribL
                  break;
                case APP_EVENT_TECH_INFO_TipId:
                  App_ConfigParamTempBuf[0] = TipMem_GetId();
-                 TextAddr = (const rom uint8*)&App_ConfigParamTempBuf[0];
+                 TextAddr = (const uint8*)&App_ConfigParamTempBuf[0];
                  TextLen = 1;
                  TextFromRom = FALSE;
                  break;
            #endif
           #endif
+           default:
+             break;
         }    
         break;
         
@@ -1192,7 +1204,11 @@ void App_GetInfo (COMM_TEXT_CODE_e AttribCode, uint8* AttribAddr, uint8* AttribL
                 TextLen = APP_TECHINFO_PARAM_REASON_TIPID_LEN;
                 break;
           #endif
+        default:
+          break;
         }    
+        break;
+      default:
         break;
     }
     if (TextFromRom)
@@ -1203,7 +1219,7 @@ void App_GetInfo (COMM_TEXT_CODE_e AttribCode, uint8* AttribAddr, uint8* AttribL
             TextAddr++;
         }
         #ifdef SW_UC_PIC18F
-            TextAddr = (const rom uint8*)&App_ConfigParamTempBuf[0];
+            TextAddr = (const uint8*)&App_ConfigParamTempBuf[0];
         #else
             TextAddr = (const uint8*)&App_ConfigParamTempBuf[0];
         #endif
@@ -1265,8 +1281,8 @@ void App_CheckRgbLed (void)
 *  Returned values:
 *    Busy/Success/Fail
 *  Remarks:
-//*    Because of hardware problem (capacitor discharge time?)
-//*    Ech time, after a pulse, only one is tested (ON or EN)
+*    Because of hardware problem (capacitor discharge time?)
+*    Ech time, after a pulse, only one is tested (ON or EN)
 ******************************************************************************/
 #ifdef SW_PROD_ReviveRf
  RESULT_t App_TestRfNoPulse (uint8 Init) 
@@ -1855,6 +1871,8 @@ void App_TaskMain (void)
             Motor_ActMotor(MOT_ID_RF, MOTOR_PARAM_MODE_OFF);
             App_Obj.State = APP_STATE_PROD_TEST_RF_FAILa;
             break;
+          default:
+            break;
         }
         break;
        case APP_STATE_PROD_TEST_RF_FAILa:                   //RF fail
@@ -1953,7 +1971,7 @@ void App_TaskMain (void)
        case APP_STATE_PROD_TEST_KEYnRF_ERR:
         if (App_IntObj.Timer == 0)
         {
-            APP_STATE_PROD_TEST_KEYnRF_TST;
+            //APP_STATE_PROD_TEST_KEYnRF_TST;
         }      
         break;
       #endif
@@ -2135,6 +2153,8 @@ void App_TaskMain (void)
                         App_TestRf(TRUE);
                     }    
                     break;
+                  default:
+                    break;
                 }
             }
          }
@@ -2271,6 +2291,8 @@ void App_TaskMain (void)
                       case RESULT_RF_TEST_FAIL:
                         App_SetEvent(APP_EVENT_FAULT_Rf);
                         break;
+                      default:
+                        break;
                     }    
                 }    
             }
@@ -2329,6 +2351,8 @@ void App_TaskMain (void)
       case APP_STATE_BLOCK1:
         break;
       #endif
+      default:
+        break;
     }    
     
     #ifdef SW_DEBUG_TRAP_EVENT

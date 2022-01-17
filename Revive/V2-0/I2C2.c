@@ -125,6 +125,7 @@ signed char WriteI2C2( unsigned char data_out )
 	}
 	
   }
+  return(0);    //Dummy. Never reahed. To avoid compilation warning.
 }
 #endif
 
@@ -146,7 +147,7 @@ signed char WriteI2C2( unsigned char data_out )
 //signed char putsI2C2( unsigned char *wrptr )
 signed char putsI2C2L( unsigned char *wrptr , unsigned char Length)  //Gal
 {
-   unsigned char temp;  
+   signed char temp;  
 	//while ( *wrptr )                 // transmit data until null character 
 	while ( Length )                 // Gal 
   {

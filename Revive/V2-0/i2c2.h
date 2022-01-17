@@ -510,9 +510,9 @@ Remarks     : This macro initiates stop condition and waits till the stop signal
 		sequence is terminated.This macro is applicable only to master
 *******************************************************************/
 #ifdef SW_TIP_TIMEOUT
- #define StopI2C2()  SSP2CON2bits.PEN=1;while(SSP2CON2bits.PEN&&IIC_NOT_TIMOUT)
+ #define StopI2C2()  SSP2CON2bits.PEN=1;while(SSP2CON2bits.PEN&&IIC_NOT_TIMOUT){}
 #else
- #define StopI2C2()  SSP2CON2bits.PEN=1;while(SSP2CON2bits.PEN)
+ #define StopI2C2()  SSP2CON2bits.PEN=1;while(SSP2CON2bits.PEN){}
 #endif
 
 /*******************************************************************
@@ -528,9 +528,9 @@ Remarks     : This macro initiates start condition and waits till the start sign
 		sequence is terminated. This macro is applicable only to master
 *******************************************************************/
 #ifdef SW_TIP_TIMEOUT
- #define StartI2C2()  SSP2CON2bits.SEN=1;while(SSP2CON2bits.SEN&&IIC_NOT_TIMOUT)
+ #define StartI2C2()  SSP2CON2bits.SEN=1;while(SSP2CON2bits.SEN&&IIC_NOT_TIMOUT){}
 #else
- #define StartI2C2()  SSP2CON2bits.SEN=1;while(SSP2CON2bits.SEN)
+ #define StartI2C2()  SSP2CON2bits.SEN=1;while(SSP2CON2bits.SEN){}
 #endif
 
 /*******************************************************************
@@ -546,9 +546,9 @@ Remarks     : This macro initiates Restart condition and waits till the Restart 
 		sequence is terminated. This macro is applicable only to master
 *******************************************************************/
 #ifdef SW_TIP_TIMEOUT
- #define RestartI2C2()  SSP2CON2bits.RSEN=1;while(SSP2CON2bits.RSEN&&IIC_NOT_TIMOUT)
+ #define RestartI2C2()  SSP2CON2bits.RSEN=1;while(SSP2CON2bits.RSEN&&IIC_NOT_TIMOUT){}
 #else
- #define RestartI2C2()  SSP2CON2bits.RSEN=1;while(SSP2CON2bits.RSEN)
+ #define RestartI2C2()  SSP2CON2bits.RSEN=1;while(SSP2CON2bits.RSEN){}
 #endif
 
 /*******************************************************************
@@ -565,9 +565,9 @@ Remarks     : This macro initiates negetive acknowledgement condition and
 		This macro is applicable only to master
 *******************************************************************/
 #ifdef SW_TIP_TIMEOUT
- #define NotAckI2C2()     SSP2CON2bits.ACKDT=1, SSP2CON2bits.ACKEN=1;while(SSP2CON2bits.ACKEN&&IIC_NOT_TIMOUT)
+ #define NotAckI2C2()     SSP2CON2bits.ACKDT=1, SSP2CON2bits.ACKEN=1;while(SSP2CON2bits.ACKEN&&IIC_NOT_TIMOUT){}
 #else
- #define NotAckI2C2()     SSP2CON2bits.ACKDT=1, SSP2CON2bits.ACKEN=1;while(SSP2CON2bits.ACKEN)
+ #define NotAckI2C2()     SSP2CON2bits.ACKDT=1, SSP2CON2bits.ACKEN=1;while(SSP2CON2bits.ACKEN){}
 #endif
 
 /*******************************************************************
@@ -584,9 +584,9 @@ Remarks     : This macro initiates positive acknowledgement condition and
 		This macro is applicable only to master
 *******************************************************************/
 #ifdef SW_TIP_TIMEOUT
- #define AckI2C2()        SSP2CON2bits.ACKDT=0, SSP2CON2bits.ACKEN=1;while(SSP2CON2bits.ACKEN&&IIC_NOT_TIMOUT)
+ #define AckI2C2()        SSP2CON2bits.ACKDT=0, SSP2CON2bits.ACKEN=1;while(SSP2CON2bits.ACKEN&&IIC_NOT_TIMOUT){}
 #else
- #define AckI2C2()        SSP2CON2bits.ACKDT=0, SSP2CON2bits.ACKEN=1;while(SSP2CON2bits.ACKEN)
+ #define AckI2C2()        SSP2CON2bits.ACKDT=0, SSP2CON2bits.ACKEN=1;while(SSP2CON2bits.ACKEN){}
 #endif
 
 #if defined (I2C_SFR_V1)
@@ -631,9 +631,9 @@ Remarks            : This Macro will be in a wait state until Start Condition En
                      or write collision will be generated.
 ***********************************************************************************************/
 #ifdef SW_TIP_TIMEOUT
- #define IdleI2C2()    while (((SSP2CON2 & 0x1F) | (SSP2STATbits.R_W)) && IIC_NOT_TIMOUT)
+ #define IdleI2C2()    while (((SSP2CON2 & 0x1F) | (SSP2STATbits.R_W)) && IIC_NOT_TIMOUT){}
 #else
- #define IdleI2C2()    while ((SSP2CON2 & 0x1F) | (SSP2STATbits.R_W))
+ #define IdleI2C2()    while ((SSP2CON2 & 0x1F) | (SSP2STATbits.R_W)){}
 #endif
 #endif
 
