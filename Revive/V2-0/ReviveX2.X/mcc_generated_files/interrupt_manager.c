@@ -1,24 +1,26 @@
 /**
-  @Generated PIC10 / PIC12 / PIC16 / PIC18 MCUs Source File
+  Generated Interrupt Manager Header File
 
   @Company:
     Microchip Technology Inc.
 
   @File Name:
-    mcc.c
+    interrupt_manager.h
 
   @Summary:
-    This is the mcc.c file generated using PIC10 / PIC12 / PIC16 / PIC18 MCUs
+    This is the Interrupt Manager file generated using PIC10 / PIC12 / PIC16 / PIC18 MCUs
 
   @Description:
-    This header file provides implementations for driver APIs for all modules selected in the GUI.
+    This header file provides implementations for global interrupt handling.
+    For individual peripheral handlers please see the peripheral driver for
+    all modules selected in the GUI.
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.6
         Device            :  PIC18F45K22
-        Driver Version    :  2.00
+        Driver Version    :  2.12
     The generated drivers are tested against the following:
         Compiler          :  XC8 2.30 and above or later
-        MPLAB             :  MPLAB X 5.40
+        MPLAB 	          :  MPLAB X 5.40
 */
 
 /*
@@ -44,33 +46,49 @@
     SOFTWARE.
 */
 
+#include "interrupt_manager.h"
 #include "mcc.h"
+#include "..\..\Main_Pub.h"
 
-
-void SYSTEM_Initialize(void)
+void  INTERRUPT_Initialize (void)
 {
+    // Enable Interrupt Priority Vectors
+    RCONbits.IPEN = 1;
 
-    INTERRUPT_Initialize();
-    I2C2_Initialize();
-    PIN_MANAGER_Initialize();
-    OSCILLATOR_Initialize();
-    CMP1_Initialize();
-    ADC_Initialize();
-    EUSART1_Initialize();
-    EUSART2_Initialize();
+    // Assign peripheral interrupt priority vectors
+
+    // ADI - high priority
+    IPR1bits.ADIP = 1;
+
+    // RCI - high priority
+    IPR3bits.RC2IP = 1;
+
+    // RCI - high priority
+    IPR1bits.RC1IP = 1;
+
+    // TXI - high priority
+    IPR3bits.TX2IP = 1;
+
+    // TXI - high priority
+    IPR1bits.TX1IP = 1;
+
+
+    // CI - low priority
+    IPR2bits.C1IP = 0;    
+
 }
 
-void OSCILLATOR_Initialize(void)
+void __interrupt() INTERRUPT_InterruptManagerHigh (void)
 {
-    // SCS FOSC; IRCF 4MHz_HFINTOSC/4; IDLEN disabled; 
-    OSCCON = 0x50;
-    // PRISD enabled; SOSCGO disabled; MFIOSEL disabled; 
-    OSCCON2 = 0x04;
-    // INTSRC disabled; PLLEN disabled; TUN 0; 
-    OSCTUNE = 0x00;
+   // interrupt handler
+    InterruptHandlerHigh();
 }
 
-
+void __interrupt(low_priority) INTERRUPT_InterruptManagerLow (void)
+{
+    // interrupt handler
+    InterruptHandlerLow();
+}
 /**
  End of File
 */

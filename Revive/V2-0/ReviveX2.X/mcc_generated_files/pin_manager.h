@@ -286,6 +286,26 @@
 #define RC7_SetAnalogMode()         do { ANSELCbits.ANSC7 = 1; } while(0)
 #define RC7_SetDigitalMode()        do { ANSELCbits.ANSC7 = 0; } while(0)
 
+// get/set RD0 procedures
+#define RD0_SetHigh()            do { LATDbits.LATD0 = 1; } while(0)
+#define RD0_SetLow()             do { LATDbits.LATD0 = 0; } while(0)
+#define RD0_Toggle()             do { LATDbits.LATD0 = ~LATDbits.LATD0; } while(0)
+#define RD0_GetValue()              PORTDbits.RD0
+#define RD0_SetDigitalInput()    do { TRISDbits.TRISD0 = 1; } while(0)
+#define RD0_SetDigitalOutput()   do { TRISDbits.TRISD0 = 0; } while(0)
+#define RD0_SetAnalogMode()         do { ANSELDbits.ANSD0 = 1; } while(0)
+#define RD0_SetDigitalMode()        do { ANSELDbits.ANSD0 = 0; } while(0)
+
+// get/set RD1 procedures
+#define RD1_SetHigh()            do { LATDbits.LATD1 = 1; } while(0)
+#define RD1_SetLow()             do { LATDbits.LATD1 = 0; } while(0)
+#define RD1_Toggle()             do { LATDbits.LATD1 = ~LATDbits.LATD1; } while(0)
+#define RD1_GetValue()              PORTDbits.RD1
+#define RD1_SetDigitalInput()    do { TRISDbits.TRISD1 = 1; } while(0)
+#define RD1_SetDigitalOutput()   do { TRISDbits.TRISD1 = 0; } while(0)
+#define RD1_SetAnalogMode()         do { ANSELDbits.ANSD1 = 1; } while(0)
+#define RD1_SetDigitalMode()        do { ANSELDbits.ANSD1 = 0; } while(0)
+
 // get/set IO_RD2 aliases
 #define IO_RD2_TRIS                 TRISDbits.TRISD2
 #define IO_RD2_LAT                  LATDbits.LATD2

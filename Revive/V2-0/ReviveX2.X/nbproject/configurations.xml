@@ -7,6 +7,9 @@
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
                      projectFiles="true">
+        <logicalFolder name="examples" displayName="examples" projectFiles="true">
+          <itemPath>mcc_generated_files/examples/i2c2_master_example.h</itemPath>
+        </logicalFolder>
         <itemPath>mcc_generated_files/pin_manager.h</itemPath>
         <itemPath>mcc_generated_files/device_config.h</itemPath>
         <itemPath>mcc_generated_files/mcc.h</itemPath>
@@ -14,6 +17,8 @@
         <itemPath>mcc_generated_files/eusart1.h</itemPath>
         <itemPath>mcc_generated_files/eusart2.h</itemPath>
         <itemPath>mcc_generated_files/cmp1.h</itemPath>
+        <itemPath>mcc_generated_files/interrupt_manager.h</itemPath>
+        <itemPath>mcc_generated_files/i2c2_master.h</itemPath>
       </logicalFolder>
       <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Adc_Loc.h</itemPath>
       <itemPath>../../../GeneoIIbPIC1939bl/V1_2/Adc_Pub.h</itemPath>
@@ -44,6 +49,7 @@
       <itemPath>../i2c2.h</itemPath>
       <itemPath>../pconfig.h</itemPath>
       <itemPath>../../../GeneoIIbPIC1939bl/V1_2/General.h</itemPath>
+      <itemPath>../Main_Pub.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -55,6 +61,9 @@
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
                      projectFiles="true">
+        <logicalFolder name="examples" displayName="examples" projectFiles="true">
+          <itemPath>mcc_generated_files/examples/i2c2_master_example.c</itemPath>
+        </logicalFolder>
         <itemPath>mcc_generated_files/mcc.c</itemPath>
         <itemPath>mcc_generated_files/pin_manager.c</itemPath>
         <itemPath>mcc_generated_files/device_config.c</itemPath>
@@ -62,6 +71,8 @@
         <itemPath>mcc_generated_files/eusart1.c</itemPath>
         <itemPath>mcc_generated_files/eusart2.c</itemPath>
         <itemPath>mcc_generated_files/cmp1.c</itemPath>
+        <itemPath>mcc_generated_files/interrupt_manager.c</itemPath>
+        <itemPath>mcc_generated_files/i2c2_master.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
       <itemPath>../I2C2.c</itemPath>

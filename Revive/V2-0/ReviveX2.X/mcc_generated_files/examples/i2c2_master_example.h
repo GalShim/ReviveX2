@@ -1,21 +1,21 @@
 /**
-  @Generated PIC10 / PIC12 / PIC16 / PIC18 MCUs Source File
+  I2C2 Generated Driver API Header File
 
-  @Company:
+  @Company
     Microchip Technology Inc.
 
-  @File Name:
-    mcc.c
+  @File Name
+    i2c2_master_example.h
 
-  @Summary:
-    This is the mcc.c file generated using PIC10 / PIC12 / PIC16 / PIC18 MCUs
+  @Summary
+    This is the generated header file for the I2C2 driver example using PIC10 / PIC12 / PIC16 / PIC18 MCUs
 
-  @Description:
-    This header file provides implementations for driver APIs for all modules selected in the GUI.
+  @Description
+    This header file provides APIs for driver for I2C2.
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.6
         Device            :  PIC18F45K22
-        Driver Version    :  2.00
+        Driver Version    :  1.0.0
     The generated drivers are tested against the following:
         Compiler          :  XC8 2.30 and above or later
         MPLAB             :  MPLAB X 5.40
@@ -44,33 +44,19 @@
     SOFTWARE.
 */
 
-#include "mcc.h"
+#ifndef I2C2_MASTER_EXAMPLE_H
+#define I2C2_MASTER_EXAMPLE_H
 
+#include <stdint.h>
+#include <stdio.h>
+#include "../i2c2_master.h"
 
-void SYSTEM_Initialize(void)
-{
+uint8_t  I2C2_Read1ByteRegister(i2c2_address_t address, uint8_t reg);
+uint16_t I2C2_Read2ByteRegister(i2c2_address_t address, uint8_t reg);
+void I2C2_Write1ByteRegister(i2c2_address_t address, uint8_t reg, uint8_t data);
+void I2C2_Write2ByteRegister(i2c2_address_t address, uint8_t reg, uint16_t data);
+void I2C2_WriteNBytes(i2c2_address_t address, uint8_t *data, size_t len);
+void I2C2_ReadNBytes(i2c2_address_t address, uint8_t *data, size_t len);
+void I2C2_ReadDataBlock(i2c2_address_t address, uint8_t reg, uint8_t *data, size_t len);
 
-    INTERRUPT_Initialize();
-    I2C2_Initialize();
-    PIN_MANAGER_Initialize();
-    OSCILLATOR_Initialize();
-    CMP1_Initialize();
-    ADC_Initialize();
-    EUSART1_Initialize();
-    EUSART2_Initialize();
-}
-
-void OSCILLATOR_Initialize(void)
-{
-    // SCS FOSC; IRCF 4MHz_HFINTOSC/4; IDLEN disabled; 
-    OSCCON = 0x50;
-    // PRISD enabled; SOSCGO disabled; MFIOSEL disabled; 
-    OSCCON2 = 0x04;
-    // INTSRC disabled; PLLEN disabled; TUN 0; 
-    OSCTUNE = 0x00;
-}
-
-
-/**
- End of File
-*/
+#endif /* I2C2_MASTER_EXAMPLE_H */

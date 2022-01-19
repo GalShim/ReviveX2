@@ -134,7 +134,7 @@
     //#define SW_MOT_RF_THREE_QUARTERS_POWER //Set power to 3/4 of the value in loadparam
     //#define SW_MOT_RF_HALF_POWER        //Set power to half of the value in loadparam
     //#define SW_MOT_RF_THIRD_POWER        //Set power to one third of the value in loadparam
-    #define SW_ROM_CHECK                //Check ROM
+    //#define SW_ROM_CHECK                //Check ROM
     #define SW_ROM_ADDR_START   0x0004  //ROM start address (skip jump to BootLoader)
     #define SW_ROM_ADDR_END     0x7BFE  //ROM end address (not include BootLoader code, because already passed it)
   #ifdef SW_PROD_ReviveRf_RepeatPulse

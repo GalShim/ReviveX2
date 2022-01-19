@@ -52,6 +52,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <conio.h>
+#include "interrupt_manager.h"
+#include "i2c2_master.h"
 #include "cmp1.h"
 #include "adc.h"
 #include "eusart2.h"
