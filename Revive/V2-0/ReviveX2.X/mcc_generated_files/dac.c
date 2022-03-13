@@ -1,24 +1,24 @@
 /**
-  @Generated PIC10 / PIC12 / PIC16 / PIC18 MCUs Source File
+  DAC Generated Driver File
 
-  @Company:
+  @Company
     Microchip Technology Inc.
 
-  @File Name:
-    mcc.c
+  @File Name
+    dac.c
 
-  @Summary:
-    This is the mcc.c file generated using PIC10 / PIC12 / PIC16 / PIC18 MCUs
+  @Summary
+    This is the generated driver implementation file for the DAC driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
 
-  @Description:
-    This header file provides implementations for driver APIs for all modules selected in the GUI.
+  @Description
+    This source file provides APIs for DAC.
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.6
         Device            :  PIC18F45K22
-        Driver Version    :  2.00
+        Driver Version    :  2.10
     The generated drivers are tested against the following:
-        Compiler          :  XC8 2.30 and above or later
-        MPLAB             :  MPLAB X 5.40
+        Compiler          :  XC8 2.30 and above
+        MPLAB 	          :  MPLAB X 5.40
 */
 
 /*
@@ -44,35 +44,34 @@
     SOFTWARE.
 */
 
-#include "mcc.h"
+/**
+  Section: Included Files
+*/
 
+#include <xc.h>
+#include "dac.h"
 
-void SYSTEM_Initialize(void)
+/**
+  Section: DAC APIs
+*/
+
+void DAC_Initialize(void)
 {
-
-    INTERRUPT_Initialize();
-    I2C2_Initialize();
-    PIN_MANAGER_Initialize();
-    OSCILLATOR_Initialize();
-    DAC_Initialize();
-    CMP1_Initialize();
-    ADC_Initialize();
-    CCP5_Initialize();
-    EUSART1_Initialize();
-    EUSART2_Initialize();
+    // DACOE disabled; DACEN enabled; DACLPS neg_ref; DACNSS VSS; DACPSS VDD; 
+    VREFCON1 = 0x80;
+    // DACR 6; 
+    DACCON1 = 0x06;
 }
 
-void OSCILLATOR_Initialize(void)
+void DAC_SetOutput(uint8_t inputData)
 {
-    // SCS FOSC; IRCF 4MHz_HFINTOSC/4; IDLEN disabled; 
-    OSCCON = 0x50;
-    // PRISD enabled; SOSCGO disabled; MFIOSEL disabled; 
-    OSCCON2 = 0x04;
-    // INTSRC disabled; PLLEN disabled; TUN 0; 
-    OSCTUNE = 0x00;
+    DACCON1  = inputData;
 }
 
-
+uint8_t DAC_GetOutput(void)
+{
+    return DACCON1;
+}
 /**
  End of File
 */

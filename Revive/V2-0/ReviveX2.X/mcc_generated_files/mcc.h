@@ -55,6 +55,8 @@
 #include "interrupt_manager.h"
 #include "i2c2_master.h"
 #include "cmp1.h"
+#include "ccp5.h"
+#include "dac.h"
 #include "adc.h"
 #include "eusart2.h"
 #include "eusart1.h"

@@ -1,24 +1,24 @@
 /**
-  @Generated PIC10 / PIC12 / PIC16 / PIC18 MCUs Source File
+  CCP5 Generated Driver API Header File
 
-  @Company:
+  @Company
     Microchip Technology Inc.
 
-  @File Name:
-    mcc.c
+  @File Name
+    ccp5.h
 
-  @Summary:
-    This is the mcc.c file generated using PIC10 / PIC12 / PIC16 / PIC18 MCUs
+  @Summary
+    This is the generated header file for the CCP5 driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
 
-  @Description:
-    This header file provides implementations for driver APIs for all modules selected in the GUI.
+  @Description
+    This header file provides APIs for driver for CCP5.
     Generation Information :
         Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.6
         Device            :  PIC18F45K22
-        Driver Version    :  2.00
+        Driver Version    :  2.01
     The generated drivers are tested against the following:
-        Compiler          :  XC8 2.30 and above or later
-        MPLAB             :  MPLAB X 5.40
+        Compiler          :  XC8 2.30 and above
+        MPLAB 	          :  MPLAB X 5.40
 */
 
 /*
@@ -44,35 +44,18 @@
     SOFTWARE.
 */
 
-#include "mcc.h"
+#ifndef CCP5_H
+#define CCP5_H
 
-
-void SYSTEM_Initialize(void)
-{
-
-    INTERRUPT_Initialize();
-    I2C2_Initialize();
-    PIN_MANAGER_Initialize();
-    OSCILLATOR_Initialize();
-    DAC_Initialize();
-    CMP1_Initialize();
-    ADC_Initialize();
-    CCP5_Initialize();
-    EUSART1_Initialize();
-    EUSART2_Initialize();
-}
-
-void OSCILLATOR_Initialize(void)
-{
-    // SCS FOSC; IRCF 4MHz_HFINTOSC/4; IDLEN disabled; 
-    OSCCON = 0x50;
-    // PRISD enabled; SOSCGO disabled; MFIOSEL disabled; 
-    OSCCON2 = 0x04;
-    // INTSRC disabled; PLLEN disabled; TUN 0; 
-    OSCTUNE = 0x00;
-}
-
-
+#include <xc.h>
 /**
- End of File
-*/
+ * Initialization routine that takes inputs from the GUI.
+ * @prototype        void CCP5_Initialize(void)
+ * @param           none
+ * @return           none
+ * @comment          
+ * @usage            CCP5_Initialize();
+ */
+void CCP5_Initialize(void);
+
+#endif  // CCP5.h

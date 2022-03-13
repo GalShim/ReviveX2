@@ -63,11 +63,11 @@ void ADC_Initialize(void)
 {
     // set the ADC to the options selected in the User Interface
     
-    // TRIGSEL CCP5; NVCFG external; PVCFG external; 
-    ADCON1 = 0x05;
+    // TRIGSEL CCP5; NVCFG external; PVCFG VDD; 
+    ADCON1 = 0x01;
     
-    // ADFM left; ACQT 0; ADCS FOSC/2; 
-    ADCON2 = 0x00;
+    // ADFM left; ACQT 0; ADCS FOSC/4; 
+    ADCON2 = 0x04;
     
     // ADRESL 0; 
     ADRESL = 0x00;

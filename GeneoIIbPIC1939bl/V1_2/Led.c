@@ -483,7 +483,8 @@ void Led_SetGreen(uint8 State)
                 LED_PORT_GREEN &= ~LED_PORT_BIT_GREEN;
             }
             break;
-          default: //Green
+          //default: //Green
+          case LED_GREEN_COLOR_GREEN:
             if (State)
             {
                 LED_PORT_GREEN |= LED_PORT_BIT_GREEN;
@@ -726,7 +727,7 @@ void Led_ActGreen (LED_GREEN_MODE_e Mode, uint8 TotalTime, uint8 PwmTime)
             Mode = LED_GREEN_MODE_CONT;
             break;
           default:
-            Led_Obj.LedGreen.State.Color = LED_GREEN_COLOR_GREEN;
+            //Led_Obj.LedGreen.State.Color = LED_GREEN_COLOR_GREEN;
             break;
         }
     #else
@@ -890,13 +891,13 @@ void Led_TaskMain (void)
 				break;
 			  case LED_CMD_SET_STATE_ON_BLUE:
 		        Led_Obj.LedGreen.State.Color = LED_GREEN_COLOR_BLUE;
-			    Led_Obj.LedGreen.State.Led = LED_BLUE_MODE_CONT;
+			    Led_Obj.LedGreen.State.Led = LED_GREEN_MODE_CONT; //LED_BLUE_MODE_CONT;
 			    Led_Obj.LedGreen.PwmTime.Total = 0;
 				Led_Obj.RgbLed.Mode = LED_RGB_MODE_OFF;
 				break;
 			  case LED_CMD_SET_STATE_BLINK_BLUE:
 		        Led_Obj.LedGreen.State.Color = LED_GREEN_COLOR_BLUE;
-			    Led_Obj.LedGreen.State.Led = LED_BLUE_MODE_PULSE;
+			    Led_Obj.LedGreen.State.Led = LED_GREEN_MODE_PULSE; //LED_BLUE_MODE_PULSE;
 			    Led_Obj.LedGreen.PwmTime.Total = 20;
 				Led_Obj.RgbLed.Mode = LED_RGB_MODE_OFF;
 				break;
